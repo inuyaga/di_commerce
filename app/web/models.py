@@ -6,6 +6,9 @@ from django.utils.html import mark_safe
 class Galeria(models.Model):
     g_image=models.ImageField(verbose_name="Imagen", upload_to="galeria/")
     g_aternativo=models.CharField(verbose_name="Texto alternativo", max_length=300)
+    class Meta:
+        verbose_name = "Venta - Galeria"
+        verbose_name_plural = "Venta - Galerias"
     def __str__(self):
         return str(self.g_image)
     def img_view(self):
@@ -15,6 +18,9 @@ class Marca(models.Model):
     m_visible=models.BooleanField(verbose_name="Activar", default=True)
     def __str__(self):
         return self.m_nombre
+    class Meta:
+        verbose_name = "Venta - Marca"
+        verbose_name_plural = "Venta - Marcas"
 
 class CatDepo(models.Model):
     cd_nombre=models.CharField(verbose_name="Nombre", max_length=100)
@@ -23,8 +29,8 @@ class CatDepo(models.Model):
     def __str__(self):
         return self.cd_nombre
     class Meta:
-        verbose_name = "Categoria/Departamento"
-        verbose_name_plural = "Categorias/Departamentos"
+        verbose_name = "Venta - Categoria/Departamento"
+        verbose_name_plural = "Venta - Categorias/Departamentos"
 
 IVA=((0.0, 'SIN IVA'), (0.16, '16%'))
 
@@ -42,6 +48,9 @@ class Producto(models.Model):
     p_iva=models.FloatField(verbose_name="Iva", choices=IVA)
     def __str__(self):
         return self.p_nombre
+    class Meta:
+        verbose_name = "Venta - Producto"
+        verbose_name_plural = "Venta - Productos"
 
 STATUS=[
     (1, "CREADO"),
@@ -52,6 +61,9 @@ class Pedido(models.Model):
     p_status=models.IntegerField(choices=STATUS, default=1, verbose_name="Estado de pedido")
     def __str__(self):
         return str(self.p_id)
+    class Meta:
+        verbose_name = "Venta - Pedido"
+        verbose_name_plural = "Venta - Pedido"
 
 
 class DetallePedido(models.Model):
@@ -80,16 +92,22 @@ class BanerPrincipal(models.Model):
     bp_url=models.CharField(verbose_name="Contenido", max_length=800, help_text="Puede ser la info de envio, url, email o numero de telefono")
     def __str__(self):
         return self.get_bp_tipo_display()
+    class Meta:
+        verbose_name = "Config - Baner Principal"
+        verbose_name_plural = "Config - Baner Principales"
  
 
 class Tag(models.Model):
     tag_nombre=models.CharField(verbose_name="Tag", max_length=70, unique=True)
     def __str__(self):
         return self.tag_nombre
+    class Meta:
+        verbose_name = "Blog - Tag"
+        verbose_name_plural = "Blog - Tags"
 
 class Blog(models.Model):
     blog_id=models.AutoField(primary_key=True)
-    blog_titulo =models.CharField('Titulo', max_length=600, help_text="Para añadir espacio escriba br dentro de <>")
+    blog_titulo =models.CharField('Titulo', max_length=600, help_text="Si desea añadir salto de linea escriba &lt;br&gt;")
     blog_descripcion =models.CharField('Descripcion', max_length=2000)
     blog_contenido=models.TextField('Contenido', blank=False, null=True,)
     blog_imagen = models.ImageField('Imagen Blog', upload_to='img_blogs/', help_text="Imagen destacada del blog. Medidas sugeridas para portada; altura:431px - Anchura:870px")
@@ -102,6 +120,9 @@ class Blog(models.Model):
     
     def __str__(self):
         return self.blog_titulo
+    class Meta:
+        verbose_name = "Blog"
+        verbose_name_plural = "Blogs" 
 
 
 class Contacto(models.Model):
@@ -114,4 +135,7 @@ class Contacto(models.Model):
     ct_form=models.BooleanField(verbose_name='Formulario', help_text="Desea activar formulario de contacto.")
     def __str__(self):
         return self.ct_direccion
+    class Meta:
+        verbose_name = "Config - Contacto"
+        verbose_name_plural = "Config - Contacto"
 
