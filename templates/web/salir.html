@@ -1,0 +1,11 @@
+{% extends 'web/base.html' %}
+{% block contenido %}
+<div class="container" style="margin-bottom: 90px;">
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Sesion Terminada!</h4>
+        <p>¡Agradecemos el tiempo dedicado a este sitio!</p>
+        <hr>
+        <p class="mb-0">Iniciar sesion nuevamente <a href="{% url 'web:login' %}">¡Presiones aqui!</a> </p>
+    </div>
+</div>
+{% endblock contenido %}

@@ -1,0 +1,142 @@
+{% extends 'web/base.html' %}
+
+
+{% block contenido %}
+<style>
+    .thumbnail {
+        border: 1px solid #ddd;
+        /* Gray border */
+        border-radius: 4px;
+        /* Rounded border */
+        padding: 5px;
+        /* Some padding */
+        width: 70px;
+        /* Set a small width */
+    }
+    a.active{
+        color: green;
+    }
+
+    .thumbnail-blog {
+        border: 1px solid #ddd;
+        /* Gray border */
+        border-radius: 4px;
+        /* Rounded border */
+        padding: 5px;
+        /* Some padding */
+        width: 370px;
+        /* Set a small width */
+        height: 266px;
+    }
+
+    /* Add a hover effect (blue shadow) */
+    .thumbnail:hover {
+        box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+    }
+</style>
+<!-- Blog Section Begin -->
+<section class="blog">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-5">
+                <div class="blog__sidebar">
+                    <div class="blog__sidebar__search">
+                        <form action="#">
+                            <input type="text" placeholder="BUSCAR...">
+                            <button type="submit"><span class="icon_search"></span></button>
+                        </form>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Categorias</h4>
+                        <ul>
+                            {% for item in categoria %}
+                            <li><a href="#">{{item}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Recientes</h4>
+                        <div class="blog__sidebar__recent">
+                            {% for item in blog_recientes %}
+                            <a href="#" class="blog__sidebar__recent__item">
+                                <div class="blog__sidebar__recent__item__pic">
+                                    <img class="thumbnail" src="{{item.blog_imagen.url}}" alt="{{item.blog_titulo}}">
+                                </div>
+                                <div class="blog__sidebar__recent__item__text">
+                                    <h6>{{item.blog_titulo}}</h6>
+                                    <span>{{item.blog_creado}}</span>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Buscar por</h4>
+                        <div class="blog__sidebar__item__tags">
+                            {% for item in tags %}
+                            <a href="#">{{item}}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-7">
+                <div class="row">
+                    {% for item in object_list %}
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="blog__item">
+                            <div class="blog__item__pic">
+                                <img class="thumbnail-blog" src="{{item.blog_imagen.url}}" alt="">
+                            </div>
+                            <div class="blog__item__text">
+                                <ul>
+                                    <li><i class="fa fa-calendar-o"></i>{{item.blog_creado}}</li>
+                                    <li><i class="fa fa-comment-o"></i></li>
+                                </ul>
+                                <h5><a href="#">{{item.blog_titulo|safe}}</a></h5>
+                                <p>{{item.blog_descripcion}}</p>
+                                <a href="#" class="blog__btn">SABER MAS<span class="arrow_right"></span></a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="col-lg-12">
+                        {% block pagination %}
+                        {% if is_paginated %}
+                        <div class="product__pagination blog__pagination">
+                            {% if page_obj.has_previous %}
+                            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">&lt;</a>
+                            {% endif %}
+
+                            {% if page_obj.number|add:'-4' > 1 %}                                
+                                <a href="?page={{ page_obj.number|add:'-5' }}">&laquo;</a>
+                            {% endif %}
+
+                            {% for i in page_obj.paginator.page_range %}
+                            {% if page_obj.number == i %}
+                            <a class="active" href="?page={{ i }}">{{ i }}</a>
+                            {% elif i > page_obj.number|add:'-5' and i < page_obj.number|add:'5' %}
+                            <a href="?page={{ i }}">{{ i }}</a>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.paginator.num_pages > page_obj.number|add:'4' %}                                
+                                <a href="?page={{ page_obj.number|add:'5' }}">&raquo;</a>
+                            {% endif %}
+
+                            {% if page_obj.has_next %}
+                            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">&gt;</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endblock pagination %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
+{% endblock contenido %}

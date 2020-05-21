@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es-mx">
+<html lang="es">
 
 <head>
     <title>
@@ -36,9 +36,12 @@
 
     <!-- Humberger Begin -->
     <div class="humberger__menu__overlay"></div>
+
+    
+    {% block menu_mobile %}                    
     <div class="humberger__menu__wrapper">
         <div class="humberger__menu__logo">
-            <a href="#"><img src="img/logo.png" alt=""></a>
+            <a href="{% url 'web:inicio' %}"><img src="{% static 'img/logo-2.png' %}" alt=""></a>
         </div>
         <div class="humberger__menu__cart">
             <ul>
@@ -48,7 +51,7 @@
             <div class="header__cart__price">item: <span>$150.00</span></div>
         </div>
         <div class="humberger__menu__widget">
-            <div class="header__top__right__language">
+            <!-- <div class="header__top__right__language">
                 <img src="img/language.png" alt="">
                 <div>English</div>
                 <span class="arrow_carrot-down"></span>
@@ -56,25 +59,31 @@
                     <li><a href="#">Spanis</a></li>
                     <li><a href="#">English</a></li>
                 </ul>
-            </div>
+            </div> -->
             <div class="header__top__right__auth">
-                <a href="#"><i class="fa fa-user"></i> Login</a>
+                
+                {% if user.is_authenticated %}
+                <a href="#"><i class="fa fa-user"></i> {{user}}</a>
+                {% else %}
+                <a href="{% url 'web:login' %}"><i class="fa fa-user"></i> Login</a>
+                {% endif %}
+                    
             </div>
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="./index.html">Inicio</a></li>
-                <li><a href="./shop-grid.html">Comprar</a></li>
-                <li><a href="#">Pages</a>
+                <li class="active"><a href="{% url 'web:inicio' %}">Inicio</a></li>
+                <li><a href="{% url 'web:comprar' %}">Comprar1</a></li>
+                <!-- <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Shop Details</a></li>
                         <li><a href="./shoping-cart.html">Shoping Cart</a></li>
                         <li><a href="./checkout.html">Check Out</a></li>
                         <li><a href="./blog-details.html">Blog Details</a></li>
                     </ul>
-                </li>
-                <li><a href="./blog.html">Blogs</a></li>
-                <li><a href="./contact.html">Contacto</a></li>
+                </li> -->
+                <li><a href="{% url 'web:blog_list' %}">Blogs</a></li>
+                <li><a href="{% url 'web:contacto' %}">Contacto</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -95,7 +104,11 @@
         </div>
     </div>
     <!-- Humberger End -->
+    {% endblock menu_mobile %}
 
+
+    
+    {% block menu_desktop %}            
     <!-- Header Section Begin -->
     <header class="header">
         <div class="header__top">
@@ -117,17 +130,26 @@
 
                                 {% endfor %}
                             </div>
-                            <div class="header__top__right__language">
-                                <img src="img/language.png" alt="">
-                                <div>English</div>
-                                <span class="arrow_carrot-down"></span>
-                                <ul>
-                                    <li><a href="#">Spanis</a></li>
-                                    <li><a href="#">English</a></li>
-                                </ul>
-                            </div>
+                            
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                                
+                                {% if user.is_authenticated %}
+                                <!-- <a href="#"><i class="fa fa-user"></i> </a> -->
+                                <div class="header__top__right__language">
+                                <!-- <img src="img/language.png" alt=""> -->
+                                    <div>{{user}}</div>
+                                    <span class="arrow_carrot-down"></span>
+                                    <ul>
+                                        <li><a href="#">Spanis</a></li>
+                                        <li><a href="#">English</a></li>
+                                        <li><a href="{% url 'web:salir' %}">Salir</a></li>
+                                    </ul>
+                                </div>
+                                {% else %}
+                                <a href="{% url 'web:login' %}"><i class="fa fa-user"></i> Entrar</a>
+                                
+                                {% endif %}
+                                    
                             </div>
                         </div>
                     </div>
@@ -138,24 +160,28 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        <a href="{% url 'web:inicio' %}"><img src="{% static 'img/logo-2.png' %}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./index.html">Inicio</a></li>
-                            <li><a href="./shop-grid.html">Comprar</a></li>
-                            <li><a href="#">Pages</a>
+                            {% url 'web:inicio' as url_site %}
+                            <li {% if request.path == url_site %}class="active"{% endif %}><a href="{% url 'web:inicio' %}">Inicio</a></li>
+                            {% url 'web:comprar' as url_site %}
+                            <li {% if request.path == url_site %}class="active"{% endif %}><a href="{% url 'web:comprar' %}">Comprar</a></li>
+                            <!-- <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
                                     <li><a href="./shoping-cart.html">Shoping Cart</a></li>
                                     <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul>
-                            </li>
-                            <li><a href="./blog.html">Blogs</a></li>
-                            <li><a href="./contact.html">Contacto</a></li>
+                            </li> -->
+                            {% url 'web:blog_list' as url_site %}
+                            <li {% if request.path == url_site %}class="active"{% endif %}><a href="{% url 'web:blog_list' %}">Blogs</a></li>
+                            {% url 'web:contacto' as url_site %}
+                            <li {% if request.path == url_site %}class="active"{% endif %}><a href="{% url 'web:contacto' %}">Contacto</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -175,6 +201,18 @@
         </div>
     </header>
     <!-- Header Section End -->
+    {% endblock menu_desktop %}
+
+
+
+
+
+
+
+
+
+
+
 
     
     <!-- Hero Section Begin -->
@@ -240,7 +278,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="{% url 'web:inicio' %}"><img src="{% static 'img/logo-2.png' %}" alt=""></a>
                         </div>
                         <ul>
                             <li>Dirección: 60-49 Road 11378 New York</li>
